@@ -62,4 +62,4 @@ mvn clean install -Pqulice
 You will need Maven 3.3+ and Java 11+.
 
 [junit]: https://junit.org/junit5/
-[slf4j]: https://www.slf4j.org/ 
+[slf4j]: https://www.slf4j.org/
