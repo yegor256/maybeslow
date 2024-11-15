@@ -1,4 +1,4 @@
-# Temp Directory in JUnit5 Tests, in the `target/`
+# `@MaybBeSlow` Annotation for JUnit5 Tests
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/maybeslow)](http://www.rultor.com/p/yegor256/maybeslow)
@@ -15,9 +15,10 @@
 Sometimes, a test may be slow in. If such a test doesn't write anything
 to the console, it may be hard to visually understand whether the test is
 still alive and running or it's already hung up. The annotation provided
-by this package help you make your JUnit5 tests visually more responsive:
-if they take longer than a second to run, the console will get a regular
-message, informing you that the test is still alive.
+by this package helps you make your JUnit5 tests visually more responsive:
+if they take longer than just _a second_ to run, the console will 
+start getting regular notification messages, informing you that the 
+test is still alive and running.
 
 First, you add this to your `pom.xml`:
 
