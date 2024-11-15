@@ -24,7 +24,8 @@
 package com.yegor256;
 
 import com.jcabi.log.Logger;
-import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -52,7 +53,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
 
     @Override
     public void beforeEach(final ExtensionContext ctx) {
-        final Method method = ctx.getTestMethod().get();
+        final String test = MayBeSlow.testOf(ctx);
         this.watch = new Thread(
             () -> {
                 long cycle = 1L;
@@ -66,7 +67,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                     Logger.warn(
                         MayBeSlow.class,
                         "We're still running %s (%[ms]s), please wait...",
-                        method.getName(),
+                        test,
                         System.currentTimeMillis() - this.start
                     );
                     ++cycle;
@@ -79,5 +80,25 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     @Override
     public void afterEach(final ExtensionContext ctx) {
         this.watch.interrupt();
+    }
+
+    /**
+     * Generate visually clean test method name.
+     * @param ctx The context
+     * @return Test method name
+     */
+    private static String testOf(final ExtensionContext ctx) {
+        String test = ctx.getTestMethod().get().getName();
+        final String[] parts = ctx.getUniqueId().split("/");
+        if (parts.length > 3) {
+            final Matcher mtc = Pattern.compile(
+                "\\[test-template-invocation:#([0-9]+)]"
+            ).matcher(parts[3]);
+            if (mtc.find()) {
+                final int index = Integer.parseInt(mtc.group(1));
+                test = String.format("%s[#%d]", test, index);
+            }
+        }
+        return test;
     }
 }
