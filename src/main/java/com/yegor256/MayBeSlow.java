@@ -42,17 +42,13 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
 
     /**
-     * When we started.
-     */
-    private final long start = System.currentTimeMillis();
-
-    /**
      * Watcher.
      */
     private Thread watch;
 
     @Override
     public void beforeEach(final ExtensionContext ctx) {
+        final long start = System.currentTimeMillis();
         final String test = MayBeSlow.testOf(ctx);
         this.watch = new Thread(
             () -> {
@@ -68,7 +64,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                         MayBeSlow.class,
                         "We're still running %s (%[ms]s), please wait...",
                         test,
-                        System.currentTimeMillis() - this.start
+                        System.currentTimeMillis() - start
                     );
                     ++cycle;
                 }
