@@ -24,6 +24,7 @@
 package com.yegor256;
 
 import com.jcabi.log.Logger;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -51,6 +52,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
 
     @Override
     public void beforeEach(final ExtensionContext ctx) {
+        final Method method = ctx.getTestMethod().get();
         this.watch = new Thread(
             () -> {
                 long cycle = 1L;
@@ -63,7 +65,8 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                     }
                     Logger.warn(
                         MayBeSlow.class,
-                        "We're still running the test (%[ms]s), please wait...",
+                        "We're still running %s (%[ms]s), please wait...",
+                        method.getName(),
                         System.currentTimeMillis() - this.start
                     );
                     ++cycle;
