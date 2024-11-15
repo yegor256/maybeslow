@@ -29,7 +29,7 @@ First, you add this to your `pom.xml`:
 </dependency>
 ```
 
-Then, you use it like this, in your JUnit5 test:
+Then, you use it like this, in your [JUnit5][junit] test:
 
 ```java
 
@@ -61,4 +61,3 @@ mvn clean install -Pqulice
 You will need Maven 3.3+ and Java 11+.
 
 [junit]: https://junit.org/junit5/
-[TempDir]: https://junit.org/junit5/docs/5.4.1/api/org/junit/jupiter/api/io/TempDir.html
