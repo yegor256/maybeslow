@@ -17,7 +17,8 @@ to the console, it may be hard to visually understand whether the test is
 still alive and running or it's already hung up. The annotation provided
 by this package helps you make your JUnit5 tests visually more responsive:
 if they take longer than just _a second_ to run, the console will 
-start getting regular notification messages, informing you that the 
+start getting regular notification messages (via [Slf4j][slf4j]), 
+informing you that the 
 test is still alive and running.
 
 First, you add this to your `pom.xml`:
@@ -62,3 +63,4 @@ mvn clean install -Pqulice
 You will need Maven 3.3+ and Java 11+.
 
 [junit]: https://junit.org/junit5/
+[slf4j]: https://www.slf4j.org/ 
