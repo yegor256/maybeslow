@@ -25,6 +25,8 @@ package com.yegor256;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link MayBeSlow}.
@@ -33,9 +35,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 final class MayBeSlowTest {
 
-    @ExtendWith(MayBeSlow.class)
     @Test
+    @ExtendWith(MayBeSlow.class)
     void slowTest() throws InterruptedException {
         Thread.sleep(5000L);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {5, 3, 1, 7})
+    @ExtendWith(MayBeSlow.class)
+    void sleepsFewSeconds(final int seconds) throws InterruptedException {
+        Thread.sleep((long) seconds * 1000L);
     }
 }

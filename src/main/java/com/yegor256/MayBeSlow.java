@@ -29,7 +29,11 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * This class helps mark potentially slow test methods.
+ * This class helps mark potentially slow test methods,
+ * printing warning messages to the console.
+ *
+ * <p>An instance of this class is created by JUnit5 for
+ * every unit-test method.</p>
  *
  * @since 0.1.0
  */
@@ -43,32 +47,28 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     /**
      * Watcher.
      */
-    private final Thread watch = new Thread(
-        () -> {
-            long cycle = 1L;
-            while (true) {
-                try {
-                    Thread.sleep(Math.min(5_000L * cycle, 60_000L));
-                } catch (final InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-                Logger.warn(
-                    MayBeSlow.class,
-                    "We're still running the test (%[ms]s), please wait...",
-                    System.currentTimeMillis() - this.start
-                );
-                ++cycle;
-            }
-        }
-    );
+    private Thread watch;
 
     @Override
     public void beforeEach(final ExtensionContext ctx) {
-        Logger.warn(
-            this,
-            "The test %s may take longer than a minute; if you want to see the full output of it, set the logging level to \"DEBUG\" for the \"com.yegor256.farea\" logging facility, in the \"src/test/resources/log4j.properties\" file",
-            ctx.getDisplayName()
+        this.watch = new Thread(
+            () -> {
+                long cycle = 1L;
+                while (true) {
+                    try {
+                        Thread.sleep(Math.min(5_000L * cycle, 60_000L));
+                    } catch (final InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                    Logger.warn(
+                        MayBeSlow.class,
+                        "We're still running the test (%[ms]s), please wait...",
+                        System.currentTimeMillis() - this.start
+                    );
+                    ++cycle;
+                }
+            }
         );
         this.watch.start();
     }
@@ -76,10 +76,5 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     @Override
     public void afterEach(final ExtensionContext ctx) {
         this.watch.interrupt();
-        Logger.warn(
-            this,
-            "Indeed, it took %[ms]s to run %s",
-            System.currentTimeMillis() - this.start, ctx.getDisplayName()
-        );
     }
 }
