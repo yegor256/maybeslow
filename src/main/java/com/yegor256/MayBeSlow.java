@@ -62,8 +62,8 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                     }
                     Logger.warn(
                         MayBeSlow.class,
-                        "We're still running %s (%[ms]s), please wait...",
-                        test,
+                        "%s (%[ms]s), please wait...",
+                        MayBeSlow.stateOf(this.watch, test),
                         System.currentTimeMillis() - start
                     );
                     ++cycle;
@@ -76,6 +76,38 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     @Override
     public void afterEach(final ExtensionContext ctx) {
         this.watch.interrupt();
+    }
+
+    /**
+     * Generate state of thread.
+     * @param thread The thread
+     * @param test Test name
+     * @return Its status
+     */
+    private static String stateOf(final Thread thread, final String test) {
+        final String sum;
+        switch (thread.getState()) {
+            case NEW:
+                sum = String.format("We just started %s", test);
+                break;
+            case RUNNABLE:
+                sum = String.format("We are still running %s", test);
+                break;
+            case BLOCKED:
+                sum = String.format("We are blocked at %s", test);
+                break;
+            case WAITING:
+            case TIMED_WAITING:
+                sum = String.format("We are waiting at %s", test);
+                break;
+            case TERMINATED:
+                sum = String.format("The test %s is terminated", test);
+                break;
+            default:
+                sum = String.format("We are lost at %s", test);
+                break;
+        }
+        return sum;
     }
 
     /**
