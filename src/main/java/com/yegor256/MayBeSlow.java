@@ -55,7 +55,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                 long cycle = 1L;
                 while (true) {
                     try {
-                        Thread.sleep(Math.min(5_000L * cycle, 60_000L));
+                        Thread.sleep(Math.min(2_000L * cycle, 60_000L));
                     } catch (final InterruptedException ex) {
                         Thread.currentThread().interrupt();
                         break;
@@ -91,20 +91,20 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                 sum = String.format("We just started %s", test);
                 break;
             case RUNNABLE:
-                sum = String.format("We are still running %s", test);
+                sum = String.format("We're still running %s", test);
                 break;
             case BLOCKED:
-                sum = String.format("We are blocked at %s", test);
+                sum = String.format("We're blocked at %s", test);
                 break;
             case WAITING:
             case TIMED_WAITING:
-                sum = String.format("We are waiting at %s", test);
+                sum = String.format("We're waiting at %s", test);
                 break;
             case TERMINATED:
                 sum = String.format("The test %s is terminated", test);
                 break;
             default:
-                sum = String.format("We are lost at %s", test);
+                sum = String.format("We're lost at %s", test);
                 break;
         }
         return sum;
