@@ -1,13 +1,13 @@
 # `@MaybBeSlow` Annotation for JUnit5 Tests
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![DevOps By Rultor.com](http://www.rultor.com/b/yegor256/maybeslow)](http://www.rultor.com/p/yegor256/maybeslow)
+[![DevOps By Rultor.com](https://www.rultor.com/b/yegor256/maybeslow)](https://www.rultor.com/p/yegor256/maybeslow)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
 [![mvn](https://github.com/yegor256/maybeslow/actions/workflows/mvn.yml/badge.svg)](https://github.com/yegor256/maybeslow/actions/workflows/mvn.yml)
-[![PDD status](http://www.0pdd.com/svg?name=yegor256/maybeslow)](http://www.0pdd.com/p?name=yegor256/maybeslow)
+[![PDD status](https://www.0pdd.com/svg?name=yegor256/maybeslow)](https://www.0pdd.com/p?name=yegor256/maybeslow)
 [![Maven Central](https://img.shields.io/maven-central/v/com.yegor256/maybeslow.svg)](https://maven-badges.herokuapp.com/maven-central/com.yegor256/maybeslow)
-[![Javadoc](http://www.javadoc.io/badge/com.yegor256/maybeslow.svg)](http://www.javadoc.io/doc/com.yegor256/maybeslow)
+[![Javadoc](https://www.javadoc.io/badge/com.yegor256/maybeslow.svg)](https://www.javadoc.io/doc/com.yegor256/maybeslow)
 [![codecov](https://codecov.io/gh/yegor256/maybeslow/branch/master/graph/badge.svg)](https://codecov.io/gh/yegor256/maybeslow)
 [![Hits-of-Code](https://hitsofcode.com/github/yegor256/maybeslow)](https://hitsofcode.com/view/github/yegor256/maybeslow)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/maybeslow/blob/master/LICENSE.txt)
