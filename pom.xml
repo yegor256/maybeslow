@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.68.0</version>
+    <version>0.72.0</version>
   </parent>
   <groupId>com.yegor256</groupId>
   <artifactId>maybeslow</artifactId>
@@ -63,7 +63,7 @@
     </site>
   </distributionManagement>
   <properties>
-    <junit.version>5.10.5</junit.version>
+    <junit.version>6.0.2</junit.version>
   </properties>
   <dependencies>
     <dependency>
@@ -96,4 +96,40 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.28.4</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <analysisConfiguration>
+            <revapi.filter>
+              <archives>
+                <exclude>
+                  <item>org\.junit\..*:.*:.*</item>
+                  <item>org\.apiguardian:.*:.*</item>
+                  <item>org\.opentest4j:.*:.*</item>
+                </exclude>
+              </archives>
+            </revapi.filter>
+          </analysisConfiguration>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
