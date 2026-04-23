@@ -5,6 +5,8 @@
 package com.yegor256;
 
 import com.jcabi.log.Logger;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -21,6 +23,20 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  * @since 0.1.0
  */
 public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
+
+    /**
+     * Verbs for each thread state.
+     */
+    private static final Map<Thread.State, String> VERBS = new EnumMap<>(Thread.State.class);
+
+    static {
+        MayBeSlow.VERBS.put(Thread.State.NEW, "We just started %s");
+        MayBeSlow.VERBS.put(Thread.State.RUNNABLE, "We're still running %s");
+        MayBeSlow.VERBS.put(Thread.State.BLOCKED, "We're blocked at %s");
+        MayBeSlow.VERBS.put(Thread.State.WAITING, "We're waiting at %s");
+        MayBeSlow.VERBS.put(Thread.State.TIMED_WAITING, "We're waiting at %s");
+        MayBeSlow.VERBS.put(Thread.State.TERMINATED, "The test %s is terminated");
+    }
 
     /**
      * Watcher.
@@ -66,29 +82,10 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
      * @return Its status
      */
     private static String stateOf(final Thread thread, final String test) {
-        final String sum;
-        switch (thread.getState()) {
-            case NEW:
-                sum = String.format("We just started %s", test);
-                break;
-            case RUNNABLE:
-                sum = String.format("We're still running %s", test);
-                break;
-            case BLOCKED:
-                sum = String.format("We're blocked at %s", test);
-                break;
-            case WAITING:
-            case TIMED_WAITING:
-                sum = String.format("We're waiting at %s", test);
-                break;
-            case TERMINATED:
-                sum = String.format("The test %s is terminated", test);
-                break;
-            default:
-                sum = String.format("We're lost at %s", test);
-                break;
-        }
-        return sum;
+        return String.format(
+            MayBeSlow.VERBS.getOrDefault(thread.getState(), "We're lost at %s"),
+            test
+        );
     }
 
     /**
@@ -104,8 +101,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                 "\\[test-template-invocation:#([0-9]+)]"
             ).matcher(parts[3]);
             if (mtc.find()) {
-                final int index = Integer.parseInt(mtc.group(1));
-                test = String.format("%s[#%d]", test, index);
+                test = String.format("%s[#%d]", test, Integer.parseInt(mtc.group(1)));
             }
         }
         return test;
