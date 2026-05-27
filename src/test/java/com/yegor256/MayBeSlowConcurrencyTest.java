@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExecutableInvoker;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -30,21 +30,19 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  */
 final class MayBeSlowConcurrencyTest {
 
-    @Test
+    @RepeatedTest(20)
     @Disabled("Reproduces the bug: Thread watch field is not safe for concurrent beforeEach calls")
     void doesNotThrowWhenCalledConcurrently() throws Exception {
-        for (int round = 0; round < 20; round++) {
-            final MayBeSlow extension = new MayBeSlow();
-            new Together<>(
-                50,
-                thread -> {
-                    final ExtensionContext ctx = new StubExtensionContext();
-                    extension.beforeEach(ctx);
-                    extension.afterEach(ctx);
-                    return true;
-                }
-            ).asList();
-        }
+        final MayBeSlow extension = new MayBeSlow();
+        new Together<>(
+            50,
+            thread -> {
+                final ExtensionContext ctx = new StubExtensionContext();
+                extension.beforeEach(ctx);
+                extension.afterEach(ctx);
+                return true;
+            }
+        ).asList();
     }
 
     /**
