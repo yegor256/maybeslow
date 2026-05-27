@@ -5,7 +5,6 @@
 package com.yegor256;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 final class MayBeSlowConcurrencyTest {
 
     @RepeatedTest(20)
-    @Disabled("Reproduces the bug: Thread watch field is not safe for concurrent beforeEach calls")
     void doesNotThrowWhenCalledConcurrently() throws Exception {
         final MayBeSlow extension = new MayBeSlow();
         Assertions.assertFalse(

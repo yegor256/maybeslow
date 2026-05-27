@@ -39,15 +39,16 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     }
 
     /**
-     * Watcher.
+     * Store namespace.
      */
-    private Thread watch;
+    private static final ExtensionContext.Namespace NAMESPACE =
+        ExtensionContext.Namespace.create(MayBeSlow.class);
 
     @Override
     public void beforeEach(final ExtensionContext ctx) {
         final long start = System.currentTimeMillis();
         final String test = MayBeSlow.testOf(ctx);
-        this.watch = new Thread(
+        final Thread watcher = new Thread(
             () -> {
                 long cycle = 1L;
                 while (true) {
@@ -60,19 +61,20 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                     Logger.warn(
                         MayBeSlow.class,
                         "%s (%[ms]s), please wait...",
-                        MayBeSlow.stateOf(this.watch, test),
+                        MayBeSlow.stateOf(Thread.currentThread(), test),
                         System.currentTimeMillis() - start
                     );
                     ++cycle;
                 }
             }
         );
-        this.watch.start();
+        ctx.getStore(MayBeSlow.NAMESPACE).put("watch", watcher);
+        watcher.start();
     }
 
     @Override
     public void afterEach(final ExtensionContext ctx) {
-        this.watch.interrupt();
+        ctx.getStore(MayBeSlow.NAMESPACE).get("watch", Thread.class).interrupt();
     }
 
     /**

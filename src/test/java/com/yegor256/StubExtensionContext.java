@@ -28,6 +28,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 final class StubExtensionContext implements ExtensionContext {
 
+    /**
+     * Store for this context.
+     */
+    private final Store store = new ThreadStore();
+
     @Override
     public Optional<ExtensionContext> getParent() {
         return Optional.empty();
@@ -138,12 +143,12 @@ final class StubExtensionContext implements ExtensionContext {
 
     @Override
     public Store getStore(final Namespace namespace) {
-        throw new UnsupportedOperationException();
+        return this.store;
     }
 
     @Override
     public Store getStore(final StoreScope scope, final Namespace namespace) {
-        throw new UnsupportedOperationException();
+        return this.store;
     }
 
     @Override
