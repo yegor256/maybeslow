@@ -4,6 +4,7 @@
  */
 package com.yegor256;
 
+import com.yegor256.Together;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -11,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,38 +33,18 @@ final class MayBeSlowConcurrencyTest {
     @Test
     @Disabled("Reproduces the bug: Thread watch field is not safe for concurrent beforeEach calls")
     void doesNotThrowWhenCalledConcurrently() throws Exception {
-        final int threads = 50;
-        final int rounds = 20;
-        final AtomicReference<Throwable> caught = new AtomicReference<>();
-        for (int round = 0; round < rounds && caught.get() == null; ++round) {
+        for (int round = 0; round < 20; round++) {
             final MayBeSlow extension = new MayBeSlow();
-            final CyclicBarrier barrier = new CyclicBarrier(threads);
-            final Thread[] workers = new Thread[threads];
-            for (int idx = 0; idx < threads; idx++) {
-                workers[idx] = new Thread(
-                    () -> {
-                        try {
-                            barrier.await();
-                            final ExtensionContext ctx = new StubExtensionContext();
-                            extension.beforeEach(ctx);
-                            extension.afterEach(ctx);
-                        } catch (final IllegalThreadStateException ex) {
-                            caught.compareAndSet(null, ex);
-                        } catch (final Exception ex) {
-                            // CyclicBarrier / other JUnit internals — not the bug
-                        }
-                    }
-                );
-                workers[idx].start();
-            }
-            for (final Thread worker : workers) {
-                worker.join(5_000L);
-            }
+            new Together<>(
+                50,
+                thread -> {
+                    final ExtensionContext ctx = new StubExtensionContext();
+                    extension.beforeEach(ctx);
+                    extension.afterEach(ctx);
+                    return true;
+                }
+            ).asList();
         }
-        Assertions.assertNull(
-            caught.get(),
-            "MayBeSlow threw IllegalThreadStateException when beforeEach was called concurrently — the Thread watch field is not safe for parallel use"
-        );
     }
 
     /**
