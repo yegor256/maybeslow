@@ -44,6 +44,13 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     private static final ExtensionContext.Namespace NAMESPACE =
         ExtensionContext.Namespace.create(MayBeSlow.class);
 
+    /**
+     * Matches the test-template-invocation segment of a unique test ID.
+     */
+    private static final Pattern INVOCATION = Pattern.compile(
+        "^[^/]+/[^/]+/[^/]+/\\[test-template-invocation:#([0-9]+)]"
+    );
+
     @Override
     public void beforeEach(final ExtensionContext ctx) {
         final long start = System.currentTimeMillis();
@@ -97,14 +104,9 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
      */
     private static String testOf(final ExtensionContext ctx) {
         String test = ctx.getTestMethod().get().getName();
-        final String[] parts = ctx.getUniqueId().split("/");
-        if (parts.length > 3) {
-            final Matcher mtc = Pattern.compile(
-                "\\[test-template-invocation:#([0-9]+)]"
-            ).matcher(parts[3]);
-            if (mtc.find()) {
-                test = String.format("%s[#%d]", test, Integer.parseInt(mtc.group(1)));
-            }
+        final Matcher mtc = MayBeSlow.INVOCATION.matcher(ctx.getUniqueId());
+        if (mtc.find()) {
+            test = String.format("%s[#%d]", test, Integer.parseInt(mtc.group(1)));
         }
         return test;
     }
