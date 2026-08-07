@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link MayBeSlow}.
- *
  * @since 0.1.0
  */
 final class MayBeSlowTest {

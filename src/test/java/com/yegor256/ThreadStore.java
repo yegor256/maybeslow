@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * In-memory {@link ExtensionContext.Store} backed by a {@link ConcurrentHashMap}.
- *
  * @since 0.2.0
  */
 final class ThreadStore implements ExtensionContext.Store {

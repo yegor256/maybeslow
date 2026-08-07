@@ -22,7 +22,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 /**
  * Minimal stub that satisfies the two methods MayBeSlow.beforeEach
  * actually calls: getTestMethod() and getUniqueId().
- *
  * @since 0.2.0
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
