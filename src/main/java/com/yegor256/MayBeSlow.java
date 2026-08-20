@@ -84,12 +84,6 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
         ctx.getStore(MayBeSlow.NAMESPACE).get("watch", Thread.class).interrupt();
     }
 
-    /**
-     * Generate state of thread.
-     * @param thread The thread
-     * @param test Test name
-     * @return Its status
-     */
     private static String stateOf(final Thread thread, final String test) {
         return String.format(
             MayBeSlow.VERBS.getOrDefault(thread.getState(), "We're lost at %s"),
@@ -97,11 +91,6 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
         );
     }
 
-    /**
-     * Generate visually clean test method name.
-     * @param ctx The context
-     * @return Test method name
-     */
     private static String testOf(final ExtensionContext ctx) {
         String test = ctx.getTestMethod().get().getName();
         final Matcher mtc = MayBeSlow.INVOCATION.matcher(ctx.getUniqueId());
