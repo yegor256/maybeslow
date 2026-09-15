@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import org.junit.jupiter.api.MediaType;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExecutableInvoker;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 /**
  * Minimal stub that satisfies the two methods MayBeSlow.beforeEach
  * actually calls: getTestMethod() and getUniqueId().
+ *
  * @since 0.2.0
  */
 @SuppressWarnings("PMD.CouplingBetweenObjects")
@@ -126,7 +128,7 @@ final class StubExtensionContext implements ExtensionContext {
     @Override
     public void publishFile(
         final String name,
-        final org.junit.jupiter.api.MediaType type,
+        final MediaType type,
         final ThrowingConsumer<Path> action
     ) {
         // nothing to publish in stub

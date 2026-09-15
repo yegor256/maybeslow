@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  * IllegalThreadStateException when beforeEach is called concurrently from
  * multiple threads, because the shared {@code watch} field is assigned and
  * started in two separate, non-atomic steps.
+ *
  * @since 0.2.0
  */
 final class MayBeSlowConcurrencyTest {

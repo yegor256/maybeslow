@@ -51,6 +51,13 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
         "^[^/]+/[^/]+/[^/]+/\\[test-template-invocation:#([0-9]+)]"
     );
 
+    /**
+     * Constructor.
+     */
+    public MayBeSlow() {
+        // Nothing to initialize.
+    }
+
     @Override
     public void beforeEach(final ExtensionContext ctx) {
         final long start = System.currentTimeMillis();
