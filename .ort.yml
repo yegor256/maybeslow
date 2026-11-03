@@ -2,9 +2,5 @@
 # SPDX-License-Identifier: MIT
 ---
 analyzer:
-  skip_excluded: true
-excludes:
-  scopes:
-    - pattern: "test"
-      reason: "TEST_DEPENDENCY_OF"
-      comment: "Test-only dependencies are not released with the library."
+  disabled_package_managers:
+    - GitHubAction
