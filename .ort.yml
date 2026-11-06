@@ -4,3 +4,9 @@
 analyzer:
   disabled_package_managers:
     - GitHubAction
+  skip_excluded: true
+excludes:
+  scopes:
+    - pattern: "test"
+      reason: "TEST_DEPENDENCY_OF"
+      comment: "Test-only dependencies are not released with the library."
