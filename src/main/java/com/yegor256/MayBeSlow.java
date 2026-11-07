@@ -48,7 +48,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
      * Matches the test-template-invocation segment of a unique test ID.
      */
     private static final Pattern INVOCATION = Pattern.compile(
-        "^[^/]+/[^/]+/[^/]+/\\[test-template-invocation:#([0-9]+)]"
+        "\\[test-template-invocation:#([0-9]+)]$"
     );
 
     /**
