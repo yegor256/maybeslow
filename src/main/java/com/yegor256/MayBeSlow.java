@@ -62,6 +62,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
     public void beforeEach(final ExtensionContext ctx) {
         final long start = System.currentTimeMillis();
         final String test = MayBeSlow.testOf(ctx);
+        final Thread self = Thread.currentThread();
         final Thread watcher = new Thread(
             () -> {
                 long cycle = 1L;
@@ -75,7 +76,7 @@ public final class MayBeSlow implements BeforeEachCallback, AfterEachCallback {
                     Logger.warn(
                         MayBeSlow.class,
                         "%s (%[ms]s), please wait...",
-                        MayBeSlow.stateOf(Thread.currentThread(), test),
+                        MayBeSlow.stateOf(self, test),
                         System.currentTimeMillis() - start
                     );
                     ++cycle;
